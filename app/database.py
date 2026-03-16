@@ -4,8 +4,8 @@ from sqlalchemy import event, text
 from pgvector.asyncpg import register_vector
 from app.config import settings
 from app.models import Base
-import psycopg
-
+from app.models import Base
+import asyncpg
 logger = logging.getLogger(__name__)
 
 # Async Engine Setup
@@ -22,24 +22,22 @@ AsyncSessionLocal = async_sessionmaker(
 
 async def init_db():
     try:
-        # Create vector extension using a raw thread-blocking connection because it must
-        # be completed before any async listener registers the type.
-        with psycopg.connect(
-            f"dbname={settings.DB_NAME} user={settings.DB_USER} password={settings.DB_PASS} host={settings.DB_HOST} port={settings.DB_PORT}",
-            autocommit=True
-        ) as conn:
-            conn.execute("CREATE EXTENSION IF NOT EXISTS vector")
-
-        # Start using alembic for schema migrations instead of create_all
+        # Gunakan koneksi asyncpg langsung untuk setup pgvector
+        # karena harus dilakukan sebelum SQLAlchemy engine digunakan
+        conn = await asyncpg.connect(
+            host=settings.DB_HOST,
+            port=settings.DB_PORT,
+            user=settings.DB_USER,
+            password=settings.DB_PASS,
+            database=settings.DB_NAME,
+        )
+        await conn.execute("CREATE EXTENSION IF NOT EXISTS vector")
+        await register_vector(conn)
+        await conn.close()
         logger.info("Database vector extension checked/initialized.")
     except Exception as e:
         logger.error(f"Failed to initialize database: {e}")
         raise
-
-# Event listener registers vector type automatically on new connections
-@event.listens_for(engine.sync_engine, "connect")
-def connect(dbapi_connection, connection_record):
-    dbapi_connection.run_async(register_vector)
 
 async def get_db():
     async with AsyncSessionLocal() as session:
