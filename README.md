@@ -1,3 +1,5 @@
+🌐 **Language:** English | [Indonesia](README.id.md)
+
 # Async Production-Ready API (FastAPI + pgvector)
 
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-blue?style=flat-square&logo=python)
@@ -6,34 +8,34 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 
-## Deskripsi Singkat
-Proyek ini adalah REST API *production-ready* berarsitektur *fully asynchronous* yang dirancang untuk skalabilitas dan keamanan tinggi. API ini mendukung kemampuan penyimpanan memori AI tingkat lanjut menggunakan PostgreSQL dan ekstensi pgvector. 
+## Short Description
+This project is a production-ready REST API with a fully asynchronous architecture designed for high scalability and security. This API supports advanced AI memory storage capabilities using PostgreSQL and the pgvector extension.
 
-Fitur utama meliputi:
-- **Vector semantic search**: Pencarian nalar semantik (optimal untuk AI/RAG dengan penyimpanan *embedding* 768 dimensi).
-- **General purpose CRUD**: Skema operasional dinamis dengan *payload* JSONB yang terindeksasi.
-- **Fully async architecture**: Dibangun di atas fondasi non-blocking murni menggunakan SQLAlchemy 2.0 Async, framework FastAPI, dan driver spesifik `asyncpg` untuk asinkronisasi tingkat tinggi.
-- **Secure by default**: Proteksi ketat meliputi lapisan otentikasi API Key, pembatasan dinamis *rate limiting*, keamanan CORS terotonomisasi, filter IP berlapis, serta sanitasi *stack trace* internal agar tidak membocorkan logika program di ranah publik.
+Main features include:
+- **Vector semantic search**: Semantic reasoning search (optimized for AI/RAG with 768-dimension embedding storage).
+- **General purpose CRUD**: Dynamic operational schema with indexed JSONB payload.
+- **Fully async architecture**: Built on a pure non-blocking foundation using SQLAlchemy 2.0 Async, the FastAPI framework, and the specific `asyncpg` driver for high-level synchronization.
+- **Secure by default**: Strict protection including an API Key authentication layer, dynamic rate limiting, autonomous CORS security, layered IP filtering, and internal stack trace sanitization to avoid leaking program logic to the public domain.
 
 ## Tech Stack
 
-| Technology | Version | Keterangan |
+| Technology | Version | Description |
 |---|---|---|
-| **Python** | 3.12+ | Ekosistem sistem komputasi dan manajemen fungsional *backend*. |
-| **FastAPI** | Latest | Basis integrasi asinkron server modern. |
-| **PostgreSQL** | 16 | Lapisan utama database berformat Object-Relational ACID. |
-| **pgvector** | Latest | Komputasi ekstensi native untuk kapabilitas kalkulasi *cosine similarity*. |
-| **SQLAlchemy** | 2.0 | Pengendalian query-builders deklaratif. |
-| **asyncpg** | Latest | Implementasi spesifik driver PostgreSQL tercepat tanpa C-bindings I/O blok. |
-| **Alembic** | Latest | Sistem engine integrasi versi skema database (Migrations). |
-| **Pydantic** | V2 | Deklarasi validasi asertif struktur *request/response* tipe statik. |
-| **slowapi** | Latest | Penjaga gerbang penolakan laju trafik berbahaya berbasis IP client. |
-| **Docker** | Latest | Standardisasi multi-stage microservices yang aman lintas sistem operasi lintas kluster. |
-| **Pytest** | Latest | Automasi instrumentasi QA fungsionalitas (*Pytest-asyncio*). |
+| **Python** | 3.12+ | Ecosystem for backend computing and functional management. |
+| **FastAPI** | Latest | Foundation for modern asynchronous server integration. |
+| **PostgreSQL** | 16 | Primary database layer in Object-Relational ACID format. |
+| **pgvector** | Latest | Native extension computation for cosine similarity calculation capabilities. |
+| **SQLAlchemy** | 2.0 | Declarative query-builders controller. |
+| **asyncpg** | Latest | Specific implementation of the fastest PostgreSQL driver without blocking I/O C-bindings. |
+| **Alembic** | Latest | Database schema engine integration system (Migrations). |
+| **Pydantic** | V2 | Assertive validation declarations for statically typed request/response structures. |
+| **slowapi** | Latest | Gatekeeper for rejecting malicious traffic rates based on client IP. |
+| **Docker** | Latest | Multi-stage microservices standardization that is secure across operating systems and clusters. |
+| **Pytest** | Latest | Automation of QA functionality instrumentation (*Pytest-asyncio*). |
 
-## Arsitektur Proyek
+## Project Architecture
 
-Berikut adalah hierarki aplikasi utama dalam ekosistem *backend*:
+Below is the main application hierarchy within the backend ecosystem:
 
 ```
 pgvector/
@@ -59,9 +61,9 @@ pgvector/
 - **Docker** & **docker-compose**
 - **Git**
 
-## Cara Instalasi & Menjalankan (Docker — Recommended)
+## Installation & Running (Docker — Recommended)
 
-Sistem telah dilengkapi dengan integrasi Docker otomatisasi *healthcheck* database serta proteksi container.
+The system is equipped with Docker integration, including automated database health checks and container protection.
 
 ```bash
 # 1. Clone repo
@@ -70,56 +72,56 @@ cd pgvector
 
 # 2. Setup environment
 cp .env.example .env
-# Edit .env sesuai kebutuhan
+# Edit .env according to your needs
 
-# 3. Build dan jalankan
+# 3. Build and run
 make build
 make up
 
-# 4. Jalankan migrasi database
+# 4. Run database migrations
 make migrate
 
-# 5. Cek status
+# 5. Check status
 docker ps
 ```
 
-## Cara Menjalankan Tanpa Docker (Local Development)
+## Running Without Docker (Local Development)
 
-Bila Anda ingin mengembangkan aplikasi ini tanpa *container* pada ekosistem *host* secara langsung:
+If you prefer to develop this application without containers on the host ecosystem directly:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-# Pastikan PostgreSQL + pgvector sudah running
+# Ensure PostgreSQL + pgvector is already running
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
 ## Environment Variables
 
-Salin `.env.example` ke `.env` dan perbarui parameter kredensial Anda.
+Copy `.env.example` to `.env` and update your credential parameters.
 
-| Variable | Contoh | Keterangan |
+| Variable | Example | Description |
 |---|---|---|
-| DB_HOST | db | Nama service docker-compose. |
-| DB_PORT | 5432 | Port PostgreSQL database default. |
-| DB_NAME | pgvector_db | Terminologi basis data. |
-| DB_USER | postgres | Akses super-otoritatif user instance. |
-| DB_PASSWORD | your_secure_password_here | Rahasia kunci proteksi utama akses skema. |
-| API_KEY | your_api_key_here | Kunci token perlindungan akses endpoint WRITE. |
-| ALLOWED_ORIGINS | https://yourdomain.com | Daftar domain putih (*whitelist*) koneksi lintas-*origin* (*CORS*). |
+| DB_HOST | db | docker-compose service name. |
+| DB_PORT | 5432 | Default PostgreSQL database port. |
+| DB_NAME | pgvector_db | Database terminology. |
+| DB_USER | postgres | Super-authoritative user instance access. |
+| DB_PASSWORD | your_secure_password_here | Main protection secret key for schema access. |
+| API_KEY | your_api_key_here | Token key for WRITE endpoint access protection. |
+| ALLOWED_ORIGINS | https://yourdomain.com | Whitelist of domains for cross-origin connections (CORS). |
 
-> **Catatan Penting**: DB_HOST harus diisi `db` saat menggunakan Docker, dan `localhost` saat development lokal.
+> **Important Note**: DB_HOST must be filled with `db` when using Docker, and `localhost` during local development.
 
 ## API Documentation
 
-Dokumentasi parameter API interaktif standar otomatis (Swagger UI) dapat disimulasi melalui:  
+Interactive, auto-generated standard API parameter documentation (Swagger UI) can be simulated via:  
 **http://localhost:8000/docs**
 
 ### Endpoint Summary
 
-| Method | Endpoint | Auth | Rate Limit | Deskripsi |
+| Method | Endpoint | Auth | Rate Limit | Description |
 |---|---|---|---|---|
 | POST | /api/v1/memories/ | ✅ API Key | 30/min | Ingest vector memory |
 | POST | /api/v1/memories/search | ❌ Public | 60/min | Semantic search |
@@ -129,7 +131,7 @@ Dokumentasi parameter API interaktif standar otomatis (Swagger UI) dapat disimul
 | PUT | /api/v1/data/{id} | ✅ API Key | 30/min | Update data |
 | DELETE | /api/v1/data/{id} | ✅ API Key | 30/min | Delete data |
 
-### Contoh Request
+### Example Requests
 
 - POST `/api/v1/memories/` (Create Memory)
   ```bash
@@ -174,51 +176,51 @@ Dokumentasi parameter API interaktif standar otomatis (Swagger UI) dapat disimul
 
 ## Makefile Commands
 
-Manajemen kluster telah diabstraksi menggunakan perintah pintasan *Make*.
+Cluster management has been abstracted using Make shortcut commands.
 
-| Command | Deskripsi |
+| Command | Description |
 |---|---|
 | make build | Build Docker image |
-| make up | Jalankan semua container |
-| make down | Hentikan semua container |
-| make logs | Lihat log API container |
-| make migrate | Jalankan Alembic migration |
-| make test | Jalankan test suite |
+| make up | Run all containers |
+| make down | Stop all containers |
+| make logs | View API container logs |
+| make migrate | Run Alembic migration |
+| make test | Run test suite |
 
 ## Testing
 
-Arsitektur aplikasi tercover oleh utilitas integrasi QA mendalam. 
+The application architecture is covered by an in-depth QA integration utility. 
 
 ```bash
-# Jalankan semua tests
+# Run all tests
 .venv/bin/pytest tests/ -v
 
-# Hasil: 48 passed, 0 warnings
+# Results: 48 passed, 0 warnings
 ```
 
-Distribusi spesifikasi testing secara konseptual (100% test coverage operasional):
+Conceptual distribution of testing specifications (100% operational test coverage):
 - test_data.py — 15 tests (CRUD endpoints)
 - test_vector.py — 8 tests (vector ingest & search)
 - test_security.py — 4 tests (API Key & stack trace)
-- test_database.py — 21 tests (koneksi, schema, transaksi, concurrency)
+- test_database.py — 21 tests (connection, schema, transaction, concurrency)
 
 ## Security Features
 
-Tingkat keamanan diisolasi secara sistematis:
-- API Key authentication (proteksi mutlak modifikasi POST, PUT, DELETE).
-- Rate limiting per IP (mitigasi abuse *compute* mesin algoritma pencarian & kluster query SQL).
-- CORS restricted via env var (keamanan identitas domain).
-- No stack trace exposure (intercept Exception lokal HTTP 500 error sanitization).
-- Non-root Docker user (restriksi keamanan sistem virtualisasi UID host OS).
-- Environment variables (tidak ada hardcoded credentials).
+Security levels are systematically isolated:
+- API Key authentication (absolute protection for POST, PUT, DELETE modifications).
+- Rate limiting per IP (mitigates compute abuse of the search algorithm & SQL query cluster).
+- CORS restricted via env var (domain identity security).
+- No stack trace exposure (intercepts local Exceptions with HTTP 500 error sanitization).
+- Non-root Docker user (OS host UID virtualization security restriction).
+- Environment variables (no hardcoded credentials).
 
 ## Troubleshooting
 
-Panduan cepat meresolusikan tantangan pengembangan maupun produksi operasional saat server online:
+A quick guide to resolving operational or development challenges when the server is online:
 
-| Error | Penyebab | Solusi |
+| Error | Cause | Solution |
 |---|---|---|
-| `failed to resolve host 'db'` | DB_HOST salah | Pastikan DB_HOST=db di .env |
-| `address already in use :5432` | PostgreSQL lokal jalan | `sudo systemctl stop postgresql` |
-| `address already in use :8000` | uvicorn dev server jalan | `pkill -f uvicorn` |
-| `permission denied docker.sock` | User belum di group docker | `sudo usermod -aG docker $USER && newgrp docker` |
+| `failed to resolve host 'db'` | Incorrect DB_HOST | Ensure DB_HOST=db in .env |
+| `address already in use :5432` | Local PostgreSQL is running | `sudo systemctl stop postgresql` |
+| `address already in use :8000` | uvicorn dev server is running | `pkill -f uvicorn` |
+| `permission denied docker.sock` | User not in docker group | `sudo usermod -aG docker $USER && newgrp docker` |
